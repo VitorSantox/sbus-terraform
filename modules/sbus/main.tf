@@ -1,8 +1,8 @@
 
 resource "azurerm_servicebus_namespace" "sbus_lab_001" {
-  name                = var.sbus_name
-  location            = azurerm_resource_group.location
-  resource_group_name = azurerm_resource_group.name
+  name                = var.namespace_name
+  location            = var.target_resource_group_location
+  resource_group_name = var.target_resource_group_name
   sku                 = "Basic"
 
   tags = {
