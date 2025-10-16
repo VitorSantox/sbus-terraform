@@ -71,7 +71,7 @@ module "network" {
 }
 
 
-###🧱 Módulos
+### 🧱 Módulos
 Dentro do diretório modules/, cada módulo contém seus próprios arquivos (main.tf, variables.tf, outputs.tf) — eles são como componentes reutilizáveis da infraestrutura.
 💡-Modularizar facilita a reutilização e padronização entre ambientes (dev, stg, prod).
 
