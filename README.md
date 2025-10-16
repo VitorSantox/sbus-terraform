@@ -56,9 +56,9 @@ O DLQ é essencial para a **confiabilidade**: se uma mensagem falhar no processa
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#📁 Estrutura típica de arquivos
+## 📁 Estrutura típica de arquivos
 
-🧩 main.tf
+###🧩 main.tf
 É o arquivo principal, onde geralmente se orquestra os módulos e recursos que serão criados.
 Aqui você pode declarar diretamente os recursos (resource), ou apontar para módulos que contêm os recursos específicos.
 
@@ -71,12 +71,12 @@ module "network" {
 }
 
 
-🧱 Módulos
+###🧱 Módulos
 Dentro do diretório modules/, cada módulo contém seus próprios arquivos (main.tf, variables.tf, outputs.tf) — eles são como componentes reutilizáveis da infraestrutura.
 💡-Modularizar facilita a reutilização e padronização entre ambientes (dev, stg, prod).
 
 
-📤 outputs.tf
+### 📤 outputs.tf
 Define saídas (outputs), ou seja, valores que o Terraform retorna ao final do apply.
 
 💡-Os outputs são úteis para integrar módulos entre si ou exportar dados para outras ferramentas (ex: Ansible, CI/CD).
@@ -87,7 +87,7 @@ output "vm_name" {
 }
 
 
-☁️ provider.tf
+### ☁️ provider.tf
 Arquivo que configura o provedor de nuvem (Azure, AWS, GCP etc).
 É aqui que o Terraform entende onde e como aplicar os recursos.
 
@@ -125,7 +125,7 @@ location = "eastus"
 e sobrescreva os valores em terraform.tfvars (ou via CLI em -var-file).
 
 
-🚀 Conclusão
+### 🚀 Conclusão
 
 Resumindo o raciocínio:
 | Arquivo            | Função principal                                | Insight rápido                           |
@@ -137,7 +137,7 @@ Resumindo o raciocínio:
 | `outputs.tf`       | Expõe resultados do apply                       | Conecta módulos e automações             |
 | `modules/`         | Contém infra modularizada                       | Reuso e padrão entre ambientes           |
 
-💬 Dica SRE:
+### 💬 Dica SRE:
 Organize seus ambientes com pastas separadas, ex:
 /environments
   /dev
