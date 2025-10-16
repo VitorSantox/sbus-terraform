@@ -58,7 +58,7 @@ O DLQ é essencial para a **confiabilidade**: se uma mensagem falhar no processa
 
 ## 📁 Estrutura típica de arquivos
 
-###🧩 main.tf
+### 🧩 main.tf
 É o arquivo principal, onde geralmente se orquestra os módulos e recursos que serão criados.
 Aqui você pode declarar diretamente os recursos (resource), ou apontar para módulos que contêm os recursos específicos.
 
