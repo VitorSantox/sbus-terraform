@@ -3,7 +3,10 @@ resource "azurerm_public_ip" "vm_pip" {
   name                = "${var.azurerm_linux_virtual_machine_name}-pip" 
   location            = var.target_resource_group_location
   resource_group_name = var.target_resource_group_name
-  allocation_method   = "Dynamic" # Dynamic é suficiente para o lab
+  allocation_method   = "Static" # Dynamic é suficiente para o lab
+
+  # A CHAVE: Mudar o SKU para Standard
+  sku                 = "Standard" 
 }
 
 resource "azurerm_network_interface" "nic" {
