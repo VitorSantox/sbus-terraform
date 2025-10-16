@@ -18,6 +18,43 @@ Em resumo: Terraform = código + estado + automação.
 Você descreve como quer que a infraestrutura seja, e o Terraform cuida do “como fazer”.
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## 💡 O Projeto Prático: Desacoplamento com Azure Service Bus (SBUS)
+
+Este repositório foi criado como um laboratório de SRE/DevOps para provisionar e testar um sistema de mensageria na Azure. O foco principal é entender o conceito de **Desacoplamento de Serviços** e a importância do **Dead-Letter Queue (DLQ)** para a confiabilidade.
+
+### 🗺️ Arquitetura Provisionada
+
+O Terraform orquestra a criação de uma arquitetura de microsserviços básica, com forte separação de responsabilidades (modularidade):
+
+| Módulo/Recurso | Função no Projeto | Ponto de Controle (IaC) |
+| :--- | :--- | :--- |
+| **`modules/rg`** | **Resource Group (RG)** | A base; contêiner lógico de todos os recursos. |
+| **`modules/network`** | **VNet e Subnet** | Cria a rede privada isolada (fundação). |
+| **`modules/sbus`** | **Azure Service Bus (Namespace & Queue)** | O serviço de mensageria. Fila principal com **DLQ ativada** (SKU Standard). |
+| **`vm_produtor`** | **Worker Produtor (VM)** | Simula o envio de mensagens (pedidos) para o S-Bus. |
+| **`vm_consumidor`** | **Worker Consumidor (VM)** | Simula o serviço que processa as mensagens da fila. |
+
+### 🔑 Ponto de Aprendizado em Destaque (SRE/Mensageria)
+
+O módulo **`sbus`** é o coração deste projeto. Ele foi configurado no Tier **Standard** para habilitar o recurso de **DLQ (Dead-Letter Queue)**.
+
+O DLQ é essencial para a **confiabilidade**: se uma mensagem falhar no processamento (por expiração, erro de código, etc.), ela não é descartada; é automaticamente movida para a DLQ. Isso permite que SREs e equipes de suporte inspecionem a mensagem, corrijam a causa raiz e a reprocessem, garantindo que nenhum dado seja perdido no sistema.
+
+### ⚙️ Como Subir a Infraestrutura
+
+1.  **Pré-requisitos:** Instale Terraform e configure suas credenciais da Azure (via `az login` ou Service Principal).
+2.  **Variáveis:** Preencha os valores únicos em `terraform.tfvars`.
+3.  **Execução:** Na raiz do projeto, execute a sequência de comandos para deploy (após o `init`):
+    ```bash
+    terraform plan
+    terraform apply --auto-approve
+    ```
+4.  **Destruição (FinOps):** Lembre-se sempre de destruir o ambiente após o uso para evitar custos de recursos ociosos:
+    ```bash
+    terraform destroy --auto-approve
+    ```
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #📁 Estrutura típica de arquivos
 
@@ -84,9 +121,7 @@ Exemplo (terraform.tfvars):
 location = "eastus"
 
 
-💡 Insight:
-
-Sempre declare suas variáveis em variables.tf (para documentação e validação)
+💡-Sempre declare suas variáveis em variables.tf (para documentação e validação)
 e sobrescreva os valores em terraform.tfvars (ou via CLI em -var-file).
 
 
